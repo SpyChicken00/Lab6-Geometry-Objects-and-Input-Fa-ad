@@ -25,12 +25,12 @@ public class PointDatabase
     
 	public PointDatabase()
 	{
-        // TODO
+        _factory = new PointNamingFactory();
 	}
 
 	public PointDatabase(List<Point> points)
 	{
-        // TODO
+        _factory = new PointNamingFactory(points);
 	}
 
 	public int size() { return _factory.size(); }
@@ -47,7 +47,7 @@ public class PointDatabase
 	 */
 	public void put(String name, double x, double y)
 	{
-        // TODO
+        _factory.put(new Point(name, x, y));
 	}
 
 	/**
@@ -58,11 +58,11 @@ public class PointDatabase
 	 */
 	public String getName(double x, double y)
 	{
-        // TODO
+        return _factory.get(x, y).getName();
 	}
 	public String getName(Point pt)
 	{
-        // TODO
+        return pt.getName();
 	}
 
 	/**
@@ -73,7 +73,13 @@ public class PointDatabase
 	 */
 	public Point getPoint(String name)
 	{
-        // TODO
+        Set<Point> pointSet = _factory.getAllPoints();
+        for (Point p : pointSet) {
+        	// return the point with the given name
+        	if (p.getName() == name) return p;
+        }
+        // if the name is not in the factory then return a new point with (0,0) coordinates
+        return new Point(0,0);
 	}
 
 	/**
@@ -85,7 +91,7 @@ public class PointDatabase
 	 */
 	public Point getPoint(Point pt)
 	{
-        // TODO
+        return _factory.get(pt);
 	}
 
 	/**
@@ -96,6 +102,6 @@ public class PointDatabase
 	 */
 	public Point getPoint(double x, double y)
 	{
-        // TODO
+        return _factory.get(x, y);
 	}
 }
