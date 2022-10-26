@@ -79,7 +79,17 @@ public class Point implements Comparable<Point>
 	 */
 	public static int LexicographicOrdering(Point p1, Point p2)
 	{
-		// TODO
+		//null checks
+		if (p1 == null) return -1;
+		if (p2 == null) return 1;
+		//check x points 
+		if (p1.getX() < p2.getX()) return -1;
+		if (p1.getX() > p2.getX()) return 1;
+		//x identical, check y points
+		if (p1.getY() < p2.getY()) return -1;
+		if (p1.getY() > p2.getY()) return 1;
+		//x and y must be identical
+		return 0;
 	}
 
 	@Override
