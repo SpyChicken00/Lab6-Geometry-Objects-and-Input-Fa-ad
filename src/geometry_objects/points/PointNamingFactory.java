@@ -32,7 +32,7 @@ public class PointNamingFactory
 
 	public PointNamingFactory()
 	{
-		// TODO
+		_database = new LinkedHashMap<Point, Point>();
 	}
 
 	/**
@@ -41,7 +41,11 @@ public class PointNamingFactory
 	 */
 	public PointNamingFactory(List<Point> points)
 	{
-		// TODO
+		_database = new LinkedHashMap<Point, Point>();
+		
+		for (Point p : points) {
+			put(p);
+		}
 	}
 
 	/**
@@ -51,7 +55,8 @@ public class PointNamingFactory
 	 */
 	public Point put(Point pt)
 	{
-		// TODO
+		if (!_database.containsKey(pt)) _database.put(pt, pt);
+		return pt;
 	}
 
 	/**
@@ -61,7 +66,9 @@ public class PointNamingFactory
 	 */
 	public Point put(double x, double y)
 	{
-		// TODO
+		Point pt = new Point(x,y);
+		if (!_database.containsKey(pt)) _database.put(pt,pt);
+		return pt;
 	}
 
 	/**
@@ -79,7 +86,9 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
-		// TODO
+		Point pt = new Point(name,x,y);
+		if (!contains(pt)) _database.put(pt, pt);
+		return pt;
 	}    
 
 	/**
@@ -141,7 +150,7 @@ public class PointNamingFactory
 	 * @return simple containment; no updating
 	 */
 	public boolean contains(double x, double y) { /* TODO */ }
-	public boolean contains(Point p) { /* TODO */ }
+	public boolean contains(Point p) { return _database.containsKey(p); }
 
 	/**
 	 * @return acquires and returns the next name in sequence; also
