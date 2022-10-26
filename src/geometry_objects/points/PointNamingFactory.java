@@ -66,7 +66,7 @@ public class PointNamingFactory
 	 */
 	public Point put(double x, double y)
 	{
-		Point pt = new Point(x,y);
+		Point pt = createNewPoint("", x,y);
 		if (!_database.containsKey(pt)) _database.put(pt,pt);
 		return pt;
 	}
@@ -86,7 +86,7 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
-		Point pt = new Point(name,x,y);
+		Point pt = createNewPoint(name,x,y);
 		if (!contains(pt)) _database.put(pt, pt);
 		return pt;
 	}    
@@ -140,8 +140,16 @@ public class PointNamingFactory
 	 */
 	private Point createNewPoint(String name, double x, double y)
 	{
-		// TODO
-		//check if already exists 
+		if (contains(x,y)) {
+			Point p = get(x,y);
+			if (p.getName() == "" || p.getName() == Point.ANONYMOUS) {
+				_database.remove(p);
+				return new Point(getCurrentName(),x,y);
+			}
+			return p;
+		}
+		if (name == "" || name == Point.ANONYMOUS) return new Point(getCurrentName(),x,y);
+		return new Point(name,x,y);
 	}
 
 	/**
@@ -158,7 +166,9 @@ public class PointNamingFactory
 	 */
 	private String getCurrentName()
 	{
-        // TODO
+        String name = _currentName;
+        updateName();
+        return name;
 	}
 
 	/**
@@ -168,7 +178,13 @@ public class PointNamingFactory
 	private  void updateName()
 	{
         // TODO
-		
+		char c = _currentName.charAt(0);
+		int asciiName = c;
+		if (c == END_LETTER) { _currentName = "Z";}
+		else {
+			c = (char) (asciiName + 1);
+			_currentName = "" + c;		
+		}
 	}
 
 	/**
