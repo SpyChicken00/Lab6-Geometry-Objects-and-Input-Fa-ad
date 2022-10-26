@@ -66,10 +66,8 @@ public class PointNamingFactory
 	 */
 	public Point put(double x, double y)
 	{
-
-		Point pt = createNewPoint("", x,y);
+		Point pt = new Point(x,y);
 		if (!_database.containsKey(pt)) _database.put(pt,pt);
-
 		return pt;
 	}
 
@@ -88,10 +86,7 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
-
-		Point pt = createNewPoint(name,x,y);
-		if (!contains(pt)) _database.put(pt, pt);
-		return pt;
+		return createNewPoint(name, x, y);
 	}
 
 	/**
@@ -147,11 +142,15 @@ public class PointNamingFactory
 	 */
 	private Point createNewPoint(String name, double x, double y)
 	{
+		// if the point is already in the database
 		if (contains(x,y)) {
 			Point p = get(x,y);
-			if (p.getName() == "" || p.getName() == Point.ANONYMOUS) {
+			// if the already existing point is unnamed and the passed name is valid
+			if (p.isUnnamed() && (name != p.ANONYMOUS || name != "")) {
 				_database.remove(p);
-				return new Point(getCurrentName(),x,y);
+				Point newpt = new Point(name, x, y);
+				_database.put(newpt, newpt);
+				return newpt;
 			}
 			return p;
 		}
@@ -164,7 +163,7 @@ public class PointNamingFactory
 	 * @param y -- single coordinate
 	 * @return simple containment; no updating
 	 */
-	public boolean contains(double x, double y) { /* TODO */ }
+	public boolean contains(double x, double y) { return _database.containsKey(new Point(x,y)); }
 	public boolean contains(Point p) { return _database.containsKey(p); }
 
 	/**
@@ -199,7 +198,7 @@ public class PointNamingFactory
 	 */
 	public  Set<Point> getAllPoints()
 	{
-        // TODO
+        return _database.keySet();
 	}
 
 	public void clear() { _database.clear(); }
