@@ -132,6 +132,7 @@ public class PointNamingFactory
 	private Point createNewPoint(String name, double x, double y)
 	{
 		// TODO
+		//check if already exists 
 	}
 
 	/**
@@ -158,6 +159,7 @@ public class PointNamingFactory
 	private  void updateName()
 	{
         // TODO
+		
 	}
 
 	/**
