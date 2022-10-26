@@ -67,7 +67,7 @@ public class PointNamingFactory
 	public Point put(double x, double y)
 	{
 		Point pt = new Point(x,y);
-		if (!_database.containsKey(pt)) _database.put(pt,pt);
+		if (!_database.containsKey(pt)) _database.put(pt ,pt);
 		return pt;
 	}
 
@@ -86,10 +86,12 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
-		Point pt = new Point(name,x,y);
-		if (!contains(pt)) _database.put(pt, pt);
+		Point pt = createNewPoint(name, x, y);
+		if (!contains(pt)) {
+			_database.put(pt, pt);
+		}
 		return pt;
-	}    
+	}
 
 	/**
 	 * Strict access (read-only of the database)
@@ -100,11 +102,11 @@ public class PointNamingFactory
 	 */
 	public Point get(double x, double y)
 	{
-		// TODO
+		return _database.get(new Point(x,y));
 	}	
 	public Point get(Point pt)
 	{
-		// TODO
+		return _database.get(pt);
 	}
 
 	/**
@@ -122,7 +124,11 @@ public class PointNamingFactory
 	 */
 	private Point lookupExisting(String name, double x, double y)
 	{
-		// TODO
+		Point pt = createNewPoint(name, x, y);
+		if (!_database.containsKey(pt)) {
+			_database.put(pt, pt);
+		}
+		return pt;
 	}  
 
 	/**
