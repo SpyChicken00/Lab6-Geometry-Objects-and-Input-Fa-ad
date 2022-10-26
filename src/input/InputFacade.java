@@ -3,7 +3,10 @@ package input;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,9 +17,19 @@ import input.builder.GeometryBuilder;
 import input.components.ComponentNode;
 import input.components.FigureNode;
 import input.components.point.PointNode;
+import input.components.point.PointNodeDatabase;
 import input.components.segment.SegmentNode;
+import input.components.segment.SegmentNodeDatabase;
 import input.parser.JSONParser;
 
+/**
+* An input facade for extracting figures and creating geometry representations
+*
+* <p>Bugs: TBT
+*
+* @author Jace, James, Emil
+* @date 10-26-22
+*/
 public class InputFacade
 {
 	/**
@@ -27,7 +40,16 @@ public class InputFacade
 	 */
 	public static FigureNode extractFigure(String filename)
 	{
-        // TODO
+		//TODO need any checking for valid filename? 
+		GeometryBuilder geoBuilder = new GeometryBuilder();
+		JSONParser parser = new JSONParser(geoBuilder);
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename);
+		
+		//ComponentNode node = parser.parse(figureStr);
+		//FigureNode figure = 
+		//TODO check if can cast in tests 
+		
+		return (FigureNode) parser.parse(figureStr);
 	}
 	
 	/**
@@ -40,6 +62,65 @@ public class InputFacade
 	 */
 	public static Map.Entry<PointDatabase, Set<Segment>> toGeometryRepresentation(String filename)
 	{
-		// TODO
+		//Create figureNode
+		FigureNode figure = extractFigure(filename); 
+		//create PointDatabase
+		PointDatabase pointDB = createPointDatabase(figure.getPointsDatabase());
+		//create SegmentSet
+		Set<Segment> segmentSet = createSegmentSet(figure.getSegments());
+		
+		return new AbstractMap.SimpleEntry<PointDatabase, Set<Segment>>(pointDB, segmentSet);
 	}
+	
+	
+	/**
+	 * Converts a pointNode object into a Point object
+	 * @param point
+	 * @return a Point object with the same data as the input pointNode
+	 */
+	private static Point convertPointNode(PointNode pointNode) 
+	{
+		double x = pointNode.getX();
+		double y = pointNode.getY();
+		String name = pointNode.getName();
+		
+		return new Point(name, x, y);
+	}
+	
+	/**
+	 * Converts a segmentNode into a Segment object
+	 * @param segment
+	 * @return a Segment object with the same data as the input segmentNode
+	 */
+	private static Segment convertSegmentNode(SegmentNode segment) 
+	{
+		Point p1 = convertPointNode(segment.getPoint1());
+		Point p2 = convertPointNode(segment.getPoint2());
+		
+		return new Segment(p1, p2);
+	}
+	/**
+	 * Create a pointDatabase based on an input PointNodeDatabase
+	 * @param nodeDB
+	 * @return a new PointDatabase corresponding to the input PointNodeDatabase
+	 */
+	private static PointDatabase createPointDatabase (PointNodeDatabase nodeDB) 
+	{
+		//convert PointNodes to Points and add to arrayList
+		List<Point> pointList = new ArrayList();
+		
+		for (PointNode pointNode: nodeDB.getPointsSet()) {
+			Point point = convertPointNode(pointNode);
+			pointList.add(point);
+		}
+		return new PointDatabase(pointList);
+	}
+	
+	private static Set<Segment> createSegmentSet (SegmentNodeDatabase nodeDB) {
+		
+		//TODO complete
+		return null;
+	}
+	
+	
 }

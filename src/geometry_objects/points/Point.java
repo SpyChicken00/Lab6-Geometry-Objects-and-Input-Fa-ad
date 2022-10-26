@@ -7,7 +7,7 @@ import utilities.math.MathUtilities;
  * 
  * Points are ordered lexicographically (thus implementing the Comparable interface)
  * 
- * @author xxx
+ * @author Dr Alvin (Lexicographic Ordering by Jace)
  */
 public class Point implements Comparable<Point>
 {

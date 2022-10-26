@@ -13,8 +13,7 @@ public class GeometryBuilder extends DefaultBuilder {
 	
 	public GeometryBuilder() 
 	{
-		//TODO check if need to verify valid information in builder or not
-		//TODO create more shapes	
+		
 	}
 
 	@Override
