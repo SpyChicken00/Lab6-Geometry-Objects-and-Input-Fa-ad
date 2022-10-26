@@ -76,6 +76,8 @@ public class Point implements Comparable<Point>
 	 * @param p2 Point 2
 	 * @return Lexicographically: p1 < p2 return -1 : p1 == p2 return 0 : p1 > p2 return 1
 	 *         Order of X-coordinates first; order of Y-coordinates second
+	 *         
+	 *         If both points are null, will return -1
 	 */
 	public static int LexicographicOrdering(Point p1, Point p2)
 	{
