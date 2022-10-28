@@ -15,7 +15,7 @@ public class PointNamingFactory
 {
 	private static final String _PREFIX = "*_"; // Distinguishes generated names
 
-	private static final char START_LETTER = 'A';
+	private static final char START_LETTER = 'A';	
 	private static final char END_LETTER = 'Z';
 
 	private String _currentName = "A";
@@ -86,7 +86,9 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
-		return createNewPoint(name, x, y);
+		Point pt = lookupExisting(name, x, y);
+		_database.put(pt, pt);
+		return pt;
 	}
 
 	/**
@@ -120,12 +122,20 @@ public class PointNamingFactory
 	 */
 	private Point lookupExisting(String name, double x, double y)
 	{
-		Point pt = createNewPoint(name, x, y);
-		if (!_database.containsKey(pt)) {
-			_database.put(pt, pt);
+		// if the point is in the database
+		if (contains(x,y)) {
+			Point pt = get(x,y);
+			// if the already existing point is unnamed and the passed name is valid
+			if (_database.get(pt).isUnnamed() && (name != Point.ANONYMOUS || name != "")) {
+				_database.remove(pt);
+				return createNewPoint(name, x, y);
+			}
+			return pt;
 		}
-		return pt;
-	}  
+		else {
+			return createNewPoint(name, x, y);
+		}
+	}
 
 	/**
 	 * @param name -- the name of the point 
@@ -142,20 +152,9 @@ public class PointNamingFactory
 	 */
 	private Point createNewPoint(String name, double x, double y)
 	{
-		// if the point is already in the database
-		if (contains(x,y)) {
-			Point p = get(x,y);
-			// if the already existing point is unnamed and the passed name is valid
-			if (p.isUnnamed() && (name != p.ANONYMOUS || name != "")) {
-				_database.remove(p);
-				Point newpt = new Point(name, x, y);
-				_database.put(newpt, newpt);
-				return newpt;
-			}
-			return p;
-		}
-		if (name == "" || name == Point.ANONYMOUS) return new Point(getCurrentName(),x,y);
-		return new Point(name,x,y);
+		if (name != Point.ANONYMOUS || name != "") return new Point(name,x,y);
+		// generates name if an invalid name is given 
+		return new Point(_PREFIX + getCurrentName(), x, y);
 	}
 
 	/**
@@ -181,18 +180,20 @@ public class PointNamingFactory
 	 * Advances the current generated name to the next letter in the alphabet:
 	 * 'A' -> 'B' -> 'C' -> 'Z' --> 'AA' -> 'BB'
 	 */
-	private  void updateName()
+	private void updateName()
 	{
-        // TODO
-		char c = _currentName.charAt(0);
-		int asciiName = c;
-		if (c == END_LETTER) { _currentName = "Z";}
+		char name = _currentName.charAt(0);
+		_currentName = "";
+		if (name == END_LETTER) { 
+			for (int i = 0; i <= _numLetters; i++) _currentName += START_LETTER;
+			_numLetters++;
+		}
 		else {
-			c = (char) (asciiName + 1);
-			_currentName = "" + c;		
+			name++;
+			for (int i = 0; i < _numLetters; i++) _currentName += name;
 		}
 	}
-
+	
 	/**
 	 * @return The entire database of points.
 	 */
@@ -203,10 +204,11 @@ public class PointNamingFactory
 
 	public void clear() { _database.clear(); }
 	public int size() { return _database.size(); }
-
+	
 	@Override
 	public String toString()
 	{
-        // TODO
+        Set<Point> pts = _database.keySet();
+        return pts.toString();
 	}
 }
