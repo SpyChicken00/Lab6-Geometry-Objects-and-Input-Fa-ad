@@ -61,7 +61,12 @@ public class PointNamingFactory
 	public Point put(Point pt)
 	{
 		Point point = lookupExisting(pt.getName(), pt.getX(), pt.getY());
+	//	System.out.println(point.getName() + " " + point.getX() + " " + point.getY());
 		_database.put(point, point);
+		Set<Point> ptset = _database.keySet();
+	//	for (Point p : ptset) {
+	//		System.out.println(p.getName() + " " + point.getX() + " " + point.getY());
+	//	}
 		return point;
 	}
 
@@ -215,7 +220,15 @@ public class PointNamingFactory
 	@Override
 	public String toString()
 	{
+		StringBuilder strBuild = new StringBuilder();
         Set<Point> pts = _database.keySet();
-        return pts.toString();
+        for (Point p : pts) {
+        	strBuild.append("(" + p.getName() + ", " + p.getX() + ", " + p.getY() + "), ");
+        }
+        if (strBuild.length() > 0) {
+        	strBuild.deleteCharAt(strBuild.length()-1);
+        	strBuild.deleteCharAt(strBuild.length()-1);
+        }
+        return strBuild.toString();
 	}
 }
