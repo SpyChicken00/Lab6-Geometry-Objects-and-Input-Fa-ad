@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,13 +42,9 @@ public class InputFacade
 	public static FigureNode extractFigure(String filename)
 	{
 		//TODO need any checking for valid filename? 
+		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename);
 		GeometryBuilder geoBuilder = new GeometryBuilder();
 		JSONParser parser = new JSONParser(geoBuilder);
-		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename);
-		
-		//ComponentNode node = parser.parse(figureStr);
-		//FigureNode figure = 
-		//TODO check if can cast in tests 
 		
 		return (FigureNode) parser.parse(figureStr);
 	}
@@ -107,20 +104,32 @@ public class InputFacade
 	private static PointDatabase createPointDatabase (PointNodeDatabase nodeDB) 
 	{
 		//convert PointNodes to Points and add to arrayList
-		List<Point> pointList = new ArrayList();
+		List<Point> pointList = new ArrayList<Point>();
 		
 		for (PointNode pointNode: nodeDB.getPointsSet()) {
 			Point point = convertPointNode(pointNode);
 			pointList.add(point);
 		}
+		
 		return new PointDatabase(pointList);
 	}
 	
-	private static Set<Segment> createSegmentSet (SegmentNodeDatabase nodeDB) {
+	/**
+	 * Creates a set of Segments based on an input SegmentNodeDatabase
+	 * @param nodeDB
+	 * @return a set of Segment objects
+	 */
+	private static Set<Segment> createSegmentSet (SegmentNodeDatabase segmentNodeDB) 
+	{
+		//get list of segmentNodes
+		List<SegmentNode> segmentNodeList = segmentNodeDB.asUniqueSegmentList();
+		Set<Segment> segmentSet = new HashSet<Segment>();
 		
-		//TODO complete
-		return null;
+		//convert segmentNodes to segments and add to set
+		for (SegmentNode segNode: segmentNodeList) {
+			segmentSet.add(convertSegmentNode(segNode));
+		}
+		
+		return segmentSet;
 	}
-	
-	
 }
