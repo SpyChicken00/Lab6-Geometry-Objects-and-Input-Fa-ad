@@ -1,3 +1,5 @@
+ 
+
 package geometry_objects.points;
 
 import java.util.LinkedHashMap;
@@ -5,12 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/*
- * Given a pair of coordinates; generate a unique name for it;
- * return that point object.
- *
- * Names go from A..Z..AA..ZZ..AAA...ZZZ
- */
+/**
+* A Point naming factory built on a Map structure. Allows the user to 
+* create points, put in points, get points, etc. If the user does not 
+* provide a name for the point, a name will be generated. 
+*
+*
+* @author Emil westling
+* @date October 27
+*/
 public class PointNamingFactory
 {
 	private static final String _PREFIX = "*_"; // Distinguishes generated names
@@ -55,8 +60,9 @@ public class PointNamingFactory
 	 */
 	public Point put(Point pt)
 	{
-		if (!_database.containsKey(pt)) _database.put(pt, pt);
-		return pt;
+		Point point = lookupExisting(pt.getName(), pt.getX(), pt.getY());
+		_database.put(point, point);
+		return point;
 	}
 
 	/**
@@ -66,8 +72,8 @@ public class PointNamingFactory
 	 */
 	public Point put(double x, double y)
 	{
-		Point pt = new Point(x,y);
-		if (!_database.containsKey(pt)) _database.put(pt,pt);
+		Point pt = lookupExisting("", x, y);
+		_database.put(pt, pt);
 		return pt;
 	}
 
@@ -101,7 +107,8 @@ public class PointNamingFactory
 	public Point get(double x, double y)
 	{
 		return _database.get(new Point(x,y));
-	}	
+	}
+	
 	public Point get(Point pt)
 	{
 		return _database.get(pt);
@@ -126,7 +133,7 @@ public class PointNamingFactory
 		if (contains(x,y)) {
 			Point pt = get(x,y);
 			// if the already existing point is unnamed and the passed name is valid
-			if (_database.get(pt).isUnnamed() && (name != Point.ANONYMOUS || name != "")) {
+			if (_database.get(pt).getName().substring(0, 2) == "*_" && (name != Point.ANONYMOUS || name != "")) {
 				_database.remove(pt);
 				return createNewPoint(name, x, y);
 			}
