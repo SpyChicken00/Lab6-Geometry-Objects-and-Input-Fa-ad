@@ -7,7 +7,6 @@ import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class PointNamingFactoryTest {
-
 	@Test
 	// test for put(Point)
 	void putPointTest() {
@@ -16,6 +15,8 @@ class PointNamingFactoryTest {
 		Point pt2 = new Point("Bye", 1, 0);
 		Point pt3 = new Point("Yo", 2, 2);
 		Point pt4 = new Point(4, 4);
+		Point pt5 = new Point("Overwrite", 4, 4);
+		
 		
 		Point addedpt1 = pnf.put(pt1);
 		assertTrue(pnf.contains(pt1));
@@ -34,12 +35,29 @@ class PointNamingFactoryTest {
 		assertEquals(addedpt3.getX(), pt3.getX());
 		assertEquals(addedpt3.getY(), pt3.getY());
 		assertEquals(addedpt3.getName(), pt3.getName());
+		assertEquals(3, pnf.size());
 		
 		Point addedpt4 = pnf.put(pt4);
 		assertTrue(pnf.contains(pt4));
 		assertEquals(addedpt4.getX(), pt4.getX());
 		assertEquals(addedpt4.getY(), pt4.getY());
 		assertEquals(addedpt4.getName(), "*_A");
+		assertEquals(4, pnf.size());
+		
+		Point addedpt5 = pnf.put(pt5);
+		assertTrue(pnf.contains(addedpt5));
+		assertEquals(4, pnf.size());
+		assertEquals("Overwrite", pnf.get(addedpt5).getName());
+		assertEquals(addedpt5.getX(), pt5.getX());
+		assertEquals(addedpt5.getY(), pt5.getY());
+		
+		pnf.clear();
+		for (int i = 0; i < 50; i++) {
+			Point addpt = new Point(i, i+1);
+			pnf.put(addpt);
+		}
+		assertEquals("*_XX", pnf.get(49, 50).getName());
+				
 	}
 	
 	@Test
@@ -64,6 +82,18 @@ class PointNamingFactoryTest {
 		assertTrue(pnf.contains(pt3));
 		assertTrue(pnf.contains(pt3.getX(), pt3.getY()));
 		assertEquals(addedpt3, pt3);
+		
+		Point pt4 = new Point(4, 4);
+		Point addedpt4 = pnf.put(pt4.getX(), pt4.getY());
+		assertTrue(pnf.contains(addedpt4));
+		assertEquals(3, pnf.size());
+		
+		pnf.clear();
+		for (int i = 0; i < 50; i++) {
+			Point addpt = new Point(i, i+1);
+			pnf.put(addpt.getX(), addpt.getY());
+		}
+		assertEquals("*_XX", pnf.get(49, 50).getName());
 	}
 
 	@Test
@@ -84,7 +114,6 @@ class PointNamingFactoryTest {
 		assertTrue(pnf.contains(pt2.getX(), pt2.getY()));
 		assertEquals(addedpt2, pt2);
 		assertEquals("*_A", addedpt2.getName());
-		
 		
 		Point pt3 = new Point("Edge", 4, 4);
 		Point addedpt3 = pnf.put(pt3.getName(), pt3.getX(), pt3.getY());
@@ -217,13 +246,14 @@ class PointNamingFactoryTest {
 		Point pt4 = new Point(3, 9);
 		
 		pnf.put(pt4.getX(), pt4.getY());
-		assertEquals("(*_A, 3, 9)", pnf.toString());
+		assertEquals("(*_A, 3.0, 9.0)", pnf.toString());
 		pnf.put(pt3);
-		assertEquals("(*_A, 3, 9), (Edge, 4, 4)", pnf.toString());
+		assertEquals("(*_A, 3.0, 9.0), (Edge, 4.0, 4.0)", pnf.toString());
 		pnf.put(pt2);
-		assertEquals("(*_A, 3, 9), (Edge, 4, 4), (*_B, 1, 2)", pnf.toString());
+		assertEquals("(*_A, 3.0, 9.0), (Edge, 4.0, 4.0), (*_B, 1.0, 2.0)", pnf.toString());
 		pnf.put(pt1.getName(), pt1.getX(), pt1.getY());
-		assertEquals("(*_A, 3, 9), (Edge, 4, 4), (*_B, 1, 2), (Hey, 1, 0)", pnf.toString());
+		assertEquals("(*_A, 3.0, 9.0), (Edge, 4.0, 4.0), "
+				+ "(*_B, 1.0, 2.0), (Hey, 1.0, 0.0)", pnf.toString());
 	}
 	
 	@Test

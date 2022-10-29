@@ -64,9 +64,9 @@ public class PointNamingFactory
 	//	System.out.println(point.getName() + " " + point.getX() + " " + point.getY());
 		_database.put(point, point);
 		Set<Point> ptset = _database.keySet();
-	//	for (Point p : ptset) {
-	//		System.out.println(p.getName() + " " + point.getX() + " " + point.getY());
-	//	}
+	/*	for (Point p : ptset) {
+			System.out.println(p.getName() + " " + point.getX() + " " + point.getY());
+		} */
 		return point;
 	}
 
@@ -138,7 +138,8 @@ public class PointNamingFactory
 		if (contains(x,y)) {
 			Point pt = get(x,y);
 			// if the already existing point is unnamed and the passed name is valid
-			if (_database.get(pt).getName().substring(0, 2) == "*_" && (name != Point.ANONYMOUS || name != "")) {
+			if (_database.get(pt).getName().substring(0, 2).equals("*_") && 
+					(!name.equals(Point.ANONYMOUS) && !name.equals(""))) {
 				_database.remove(pt);
 				return createNewPoint(name, x, y);
 			}
@@ -164,8 +165,10 @@ public class PointNamingFactory
 	 */
 	private Point createNewPoint(String name, double x, double y)
 	{
-		if (name != Point.ANONYMOUS || name != "") return new Point(name,x,y);
-		// generates name if an invalid name is given 
+		if (!name.equals(Point.ANONYMOUS) && !name.equals("")) {
+			return new Point(name,x,y);
+		}
+		// generates name if an invalid name is given
 		return new Point(_PREFIX + getCurrentName(), x, y);
 	}
 
@@ -214,7 +217,12 @@ public class PointNamingFactory
         return _database.keySet();
 	}
 
-	public void clear() { _database.clear(); }
+	public void clear() { 
+		_database.clear();
+		_currentName = "A";
+		_numLetters = 1;
+		}
+	
 	public int size() { return _database.size(); }
 	
 	@Override
