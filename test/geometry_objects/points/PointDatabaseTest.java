@@ -8,7 +8,7 @@ class PointDatabaseTest {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		fail("FINISH POINTDATABASE TESTS");
 	}
 
 }

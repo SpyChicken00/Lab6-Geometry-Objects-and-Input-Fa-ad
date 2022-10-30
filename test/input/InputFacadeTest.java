@@ -66,27 +66,30 @@ class InputFacadeTest {
 		Map.Entry<PointDatabase, Set<Segment>> geometryMap = InputFacade.toGeometryRepresentation("JSON/single_triangle.json");
 		PointDatabase testPointDB = testMap.getKey();
 		PointDatabase geoPointDB = geometryMap.getKey();
+		Set<Segment> testSegments = testMap.getValue();
+		Set<Segment> geoSegments = geometryMap.getValue();
 		
+		//System.out.println(testPointDB.getPoint("A").getName());
+		//was unnamed for some reason, why? issue in pointNamingFactory? EMIL USING == grrr
+		//System.out.println(geoPointDB.getPoint("A").getName());
 		
+		//assert points in testMap and geoMap are the same
+		assertEquals(0, testPointDB.getPoint("A").compareTo(geoPointDB.getPoint("A")));
+		assertEquals(0, testPointDB.getPoint("B").compareTo(geoPointDB.getPoint("B")));
+		assertEquals(0, testPointDB.getPoint("C").compareTo(geoPointDB.getPoint("C")));
 		
-		//System.out.println("TEST MAP POINTS: " + testMap.getKey().getPoints());
-		//System.out.println("GEO MAP POINTS: " + geometryMap.getKey().getPoints());
+		//assert segments in testMap and geoMap are the same 
+		assertTrue(testSegments.containsAll(geoSegments));
+		assertTrue(geoSegments.containsAll(testSegments));
 		
-		//assertEquals(testMap.getKey().getPoints(), geometryMap.getKey().getPoints());
-		System.out.println(testPointDB.getPoint("B").getName());
-		//TODO unnamed for some reason, why? issue in pointNamingFactory?
-		System.out.println(geoPointDB.getPoint("B").getName());
+		/*
+		for (Segment seg: geoSegments) {
+			System.out.println(seg.getPoint1().getName() + seg.getPoint2().getName());
+		}
 		
-			assertEquals(0, testMap.getKey().getPoint("A").compareTo(geometryMap.getKey().getPoint("A")));
-			assertEquals(0, testMap.getKey().getPoint("B").compareTo(geometryMap.getKey().getPoint("B")));
-			//assertEquals(0, testMap.getKey().getPoint("C").compareTo(geometryMap.getKey().getPoint("C")));
-			
-		
-			
-		//}
-
-		
-		
-
+		for (Segment seg: testSegments) {
+			System.out.println(seg.getPoint1().getName() + seg.getPoint2().getName());
+		}
+		*/
 	}
 }

@@ -111,6 +111,19 @@ public class PointNamingFactory
 	 */
 	public Point get(double x, double y)
 	{
+		//TODO what if point already exists??????
+		//need to find point in database that corresponds to that points x and y
+		//if (contains(x, y)) return FIND
+		/*
+		for (Point p: _database.keySet()) {
+			if ((Double.compare(x, p.getX()) == 0) && (Double.compare(y, p.getY()) == 0)) {
+				return p;
+			}
+			
+		}
+		*/
+		
+				
 		return _database.get(new Point(x,y));
 	}
 	
