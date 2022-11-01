@@ -67,6 +67,7 @@ public class PointNamingFactory
 	/*	for (Point p : ptset) {
 			System.out.println(p.getName() + " " + point.getX() + " " + point.getY());
 		} */
+		
 		return point;
 	}
 
