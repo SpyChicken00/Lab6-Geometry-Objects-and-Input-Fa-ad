@@ -85,11 +85,32 @@ class PointDatabaseTest {
 	}
 	
 	@Test
-	void getPointstest() {		
+	void getPointtest() {		
 		List<Point> list = fillPDB();
-		
 		PointDatabase pdb = new PointDatabase(list);
+		
 		assertEquals(4, pdb.size());
+		
+		assertEquals(list.get(0), pdb.getPoint("Hey"));
+		assertEquals(list.get(0), pdb.getPoint(pdb.getPoint("Hey")));
+		assertEquals(list.get(0), pdb.getPoint(0, 1));
+		
+		assertEquals(list.get(1), pdb.getPoint("Bye"));
+		assertEquals(list.get(1), pdb.getPoint(pdb.getPoint("Bye")));
+		assertEquals(list.get(1), pdb.getPoint(1, 0));
+		
+		assertEquals(list.get(2), pdb.getPoint("Yo"));
+		assertEquals(list.get(2), pdb.getPoint(pdb.getPoint("Yo")));
+		assertEquals(list.get(2), pdb.getPoint(2, 2));
+		
+		assertEquals(list.get(3), pdb.getPoint("*_A"));
+		assertEquals(list.get(3), pdb.getPoint(pdb.getPoint("*_A")));
+		assertEquals(list.get(3), pdb.getPoint(4, 4));
+		
 	}
 
+	@Test
+	void getPointstest() {
+		
+	}
 }
