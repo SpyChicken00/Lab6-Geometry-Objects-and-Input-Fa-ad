@@ -60,10 +60,12 @@ public class PointNamingFactory
 	 */
 	public Point put(Point pt)
 	{
+		// calls helper methods that checks if the point already exists 
+		// and creates a point. Then puts the point in the database
 		Point point = lookupExisting(pt.getName(), pt.getX(), pt.getY());
 		_database.put(point, point);
 		Set<Point> ptset = _database.keySet();
-		
+
 		return point;
 	}
 
@@ -74,6 +76,8 @@ public class PointNamingFactory
 	 */
 	public Point put(double x, double y)
 	{
+		// calls helper methods that checks if the point already exists 
+		// and creates a point. Then puts the point in the database
 		Point pt = lookupExisting("", x, y);
 		_database.put(pt, pt);
 		return pt;
@@ -94,6 +98,8 @@ public class PointNamingFactory
 	 */
 	public Point put(String name, double x, double y)
 	{
+		// calls helper methods that checks if the point already exists 
+		// and creates a point. Then puts the point in the database
 		Point pt = lookupExisting(name, x, y);
 		_database.put(pt, pt);
 		return pt;
@@ -196,6 +202,7 @@ public class PointNamingFactory
 	{
 		char name = _currentName.charAt(0);
 		_currentName = "";
+		// if the current letter is the last allowed letter, then we start over and add one letter
 		if (name == END_LETTER) { 
 			for (int i = 0; i <= _numLetters; i++) _currentName += START_LETTER;
 			_numLetters++;
@@ -214,6 +221,9 @@ public class PointNamingFactory
         return _database.keySet();
 	}
 
+	/**
+	 * clears the database
+	 */
 	public void clear() { 
 		_database.clear();
 		_currentName = "A";
@@ -222,14 +232,21 @@ public class PointNamingFactory
 	
 	public int size() { return _database.size(); }
 	
+	/**
+	 * creates a string with all points looking like (name, x, y), ...
+	 * @return the created string 
+	 */
 	@Override
 	public String toString()
 	{
+		
 		StringBuilder strBuild = new StringBuilder();
         Set<Point> pts = _database.keySet();
+        // adds all points to the StringBuilder
         for (Point p : pts) {
         	strBuild.append("(" + p.getName() + ", " + p.getX() + ", " + p.getY() + "), ");
         }
+        // deletes the last space and comma
         if (strBuild.length() > 0) {
         	strBuild.deleteCharAt(strBuild.length()-1);
         	strBuild.deleteCharAt(strBuild.length()-1);

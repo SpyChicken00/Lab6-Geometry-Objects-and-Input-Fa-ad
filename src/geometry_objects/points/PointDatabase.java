@@ -1,6 +1,5 @@
 package geometry_objects.points;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +12,8 @@ import java.util.Set;
  * 
  * This is a Decorator class with the Point Factory in the background
  * 
- * @author xxx
+ * @author Emil and James
+ * @date November 1
  */
 public class PointDatabase
 {
