@@ -41,7 +41,6 @@ public class InputFacade
 	 */
 	public static FigureNode extractFigure(String filename)
 	{
-		//TODO need any checking for valid filename? 
 		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename);
 		GeometryBuilder geoBuilder = new GeometryBuilder();
 		JSONParser parser = new JSONParser(geoBuilder);

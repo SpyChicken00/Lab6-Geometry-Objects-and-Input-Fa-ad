@@ -76,7 +76,6 @@ public class PointDatabase
         Set<Point> pointSet = _factory.getAllPoints();
         for (Point p : pointSet) {
         	// return the point with the given name
-        	//TODO emil ima kill you for using == and making me debug this....
         	if (p.getName().equals(name)) return p;
         }
         // if the name is not in the factory then return a new point with (0,0) coordinates

@@ -61,12 +61,8 @@ public class PointNamingFactory
 	public Point put(Point pt)
 	{
 		Point point = lookupExisting(pt.getName(), pt.getX(), pt.getY());
-	//	System.out.println(point.getName() + " " + point.getX() + " " + point.getY());
 		_database.put(point, point);
 		Set<Point> ptset = _database.keySet();
-	/*	for (Point p : ptset) {
-			System.out.println(p.getName() + " " + point.getX() + " " + point.getY());
-		} */
 		
 		return point;
 	}
@@ -111,20 +107,7 @@ public class PointNamingFactory
 	 * @return stored database Object corresponding to (x, y) 
 	 */
 	public Point get(double x, double y)
-	{
-		//TODO what if point already exists??????
-		//need to find point in database that corresponds to that points x and y
-		//if (contains(x, y)) return FIND
-		/*
-		for (Point p: _database.keySet()) {
-			if ((Double.compare(x, p.getX()) == 0) && (Double.compare(y, p.getY()) == 0)) {
-				return p;
-			}
-			
-		}
-		*/
-		
-				
+	{		
 		return _database.get(new Point(x,y));
 	}
 	
