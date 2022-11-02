@@ -40,7 +40,7 @@ public class InputFacade
 	 * @return a FigureNode object corresponding to the input file.
 	 */
 	public static FigureNode extractFigure(String filename)
-	{
+	{	
 		String figureStr = utilities.io.FileUtilities.readFileFilterComments(filename);
 		GeometryBuilder geoBuilder = new GeometryBuilder();
 		JSONParser parser = new JSONParser(geoBuilder);

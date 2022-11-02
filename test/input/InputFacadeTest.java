@@ -69,10 +69,6 @@ class InputFacadeTest {
 		Set<Segment> testSegments = testMap.getValue();
 		Set<Segment> geoSegments = geometryMap.getValue();
 		
-		//System.out.println(testPointDB.getPoint("A").getName());
-		//was unnamed for some reason, why? issue in pointNamingFactory? EMIL USING == grrr
-		//System.out.println(geoPointDB.getPoint("A").getName());
-		
 		//assert points in testMap and geoMap are the same
 		assertEquals(0, testPointDB.getPoint("A").compareTo(geoPointDB.getPoint("A")));
 		assertEquals(0, testPointDB.getPoint("B").compareTo(geoPointDB.getPoint("B")));
@@ -82,14 +78,6 @@ class InputFacadeTest {
 		assertTrue(testSegments.containsAll(geoSegments));
 		assertTrue(geoSegments.containsAll(testSegments));
 		
-		/*
-		for (Segment seg: geoSegments) {
-			System.out.println(seg.getPoint1().getName() + seg.getPoint2().getName());
-		}
 		
-		for (Segment seg: testSegments) {
-			System.out.println(seg.getPoint1().getName() + seg.getPoint2().getName());
-		}
-		*/
 	}
 }

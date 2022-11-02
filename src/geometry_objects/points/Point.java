@@ -107,7 +107,6 @@ public class Point implements Comparable<Point>
 		// if x and y values of the points are equal, the points are equal 
 		if (!(o instanceof Point)) return false;
 		Point pt = (Point)o;
-		if (this._x == pt.getX() && this._y == pt.getY()) return true;
-		return false;
+		return (MathUtilities.doubleEquals(this._x, pt.getX()) && MathUtilities.doubleEquals(this._y, pt.getY()));
 	}
 }

@@ -17,7 +17,7 @@ class PointNamingFactoryTest {
 		Point pt4 = new Point(4, 4);
 		Point pt5 = new Point("Overwrite", 4, 4);
 		
-		
+		//add five points in sequence
 		Point addedpt1 = pnf.put(pt1);
 		assertTrue(pnf.contains(pt1));
 		assertEquals(addedpt1.getX(), pt1.getX());

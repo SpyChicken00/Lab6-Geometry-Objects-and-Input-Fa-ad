@@ -108,9 +108,4 @@ class PointDatabaseTest {
 		assertEquals(list.get(3), pdb.getPoint(4, 4));
 		
 	}
-
-	@Test
-	void getPointstest() {
-		
-	}
 }
